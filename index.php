@@ -1,3 +1,7 @@
+<?php
+            require_once "include/start_bdd.php";
+
+            ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -7,11 +11,11 @@
 </head>
 <body>
     <h1>To Do List App</h1>
-    <h3>Une ToDoList performante codé par @OTFSheikh</h3>
+    <h3>Une ToDoList performante codée par @OTFSheikh</h3>
     <form action="" method="post">
         <table>
             <tr><td>Nom de la tache : </td><td><input type="text" name="nom" id="nom" placeholder="Entrer le nom de la tâche" size = 50></td></tr>
-            <tr><td>Description de la tâche : </td><td><textarea name="description" id="description" placeholder="Entrer le nom de la tâche" cols="48"></textarea></td></tr>
+            <tr><td>Description de la tâche : </td><td><textarea name="description" id="description" placeholder="Entrer la description de la tâche" cols="48" rows="5"></textarea></td></tr>
             <tr><td>Date d'échéance : </td><td><input type="date" name="date" id="date"></td></tr>
             <br>
             <tr><td><input type="submit" value="Ajouter" name="ajouter"></td><td><input type="reset" value="Effacer"></td></tr>
@@ -28,7 +32,6 @@
         } elseif (empty($_POST["date"])) {
             $message = "la date d'échéance est requise !";
         } else {
-            require_once "include/start_bdd.php";
             $nom = strip_tags($_POST["nom"]);
             $description = strip_tags($_POST["description"]);
             $date = strip_tags($_POST["date"]);
@@ -43,12 +46,47 @@
             if (!$resultat) {
                 $message = "Erreur de connexion à la base de donnée";
             }else {
-                $message = "La tâches a été ajoutée";
+                $message = "La tâche a été ajoutée";
             }
 
         }
         echo "<h5>".$message."</h5>";
     }
+
+    $req1 = $bdd->prepare("SELECT * FROM liste_taches");
+    $resultat1 = $req1->execute();
+    $liste = $req1->fetchAll(PDO::FETCH_ASSOC);
+    $nbre = $req1->rowCount();
     ?>
+    <table>
+        <tr>
+            <th>Tâches</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Modifier</th>
+            <th>Supprimer</th>
+        </tr>
+    <?php
+
+    if ($nbre!=0) {
+        // echo "<pre>";
+        // print_r($liste);
+        foreach ($liste as $key => $value){
+            ?>
+            <tr>
+                <td><?=$value["tache"]?></td>
+                <td><?=$value["description"]?></td>
+                <td><?=$value["date"]?></td>
+                <td><input type="checkbox" name="isdone" id="isdone"></td>
+                <td><a href="modifier.php?id=<?=$value["id"]?>">Modifier</a></td>
+                <td><a href="supprime.php?id=<?=$value["id"]?>">Supprimer</a></td>
+            </tr>
+            <?php
+        }
+    }
+
+    ?>
+    </table>
 </body>
 </html>
