@@ -15,7 +15,7 @@
 </head>
 <body>
     <h1>OTF ToDo List</h1>
-    <h3>Une ToDoList Simple codée par @OTFSheikh</h3>
+    <h3>Une ToDoList Simple Codée Par <u>@OTFSheikh</u></h3>
     <div class="form">
     <form action="" method="post">
         <table>
