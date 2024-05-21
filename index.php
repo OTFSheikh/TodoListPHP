@@ -7,11 +7,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="include/Style.css">
+    <style>
+        
+    </style>
     <title>Todo List App</title>
 </head>
 <body>
-    <h1>To Do List App</h1>
-    <h3>Une ToDoList performante codée par @OTFSheikh</h3>
+    <h1>OTF ToDo List</h1>
+    <h3>Une ToDoList Simple codée par @OTFSheikh</h3>
+    <div class="form">
     <form action="" method="post">
         <table>
             <tr><td>Nom de la tache : </td><td><input type="text" name="nom" id="nom" placeholder="Entrer le nom de la tâche" size = 50></td></tr>
@@ -19,9 +24,9 @@
             <tr><td>Date d'échéance : </td><td><input type="date" name="date" id="date"></td></tr>
             <br>
             <tr><td><input type="submit" value="Ajouter" name="ajouter"></td><td><input type="reset" value="Effacer"></td></tr>
-        </table>
-        
+        </table>  
     </form>
+    </div>
 
     <?php
     if (isset($_POST['ajouter'])) {
@@ -45,25 +50,27 @@
             $resultat = $req->execute();
             if (!$resultat) {
                 $message = "Erreur de connexion à la base de donnée";
-            }else {
+            } else {
                 $message = "La tâche a été ajoutée";
             }
-
         }
-        echo "<h5>".$message."</h5>";
+        echo "<h5 style='textalign=centre'>".$message."</h5>";
     }
+
+    
 
     $req1 = $bdd->prepare("SELECT * FROM liste_taches");
     $resultat1 = $req1->execute();
     $liste = $req1->fetchAll(PDO::FETCH_ASSOC);
     $nbre = $req1->rowCount();
     ?>
+    <div class="table">
     <table>
         <tr>
             <th>Tâches</th>
             <th>Description</th>
             <th>Date</th>
-            <th>Status</th>
+            <!-- <th>Status</th> -->
             <th>Modifier</th>
             <th>Supprimer</th>
         </tr>
@@ -78,15 +85,18 @@
                 <td><?=$value["tache"]?></td>
                 <td><?=$value["description"]?></td>
                 <td><?=$value["date"]?></td>
-                <td><input type="checkbox" name="isdone" id="isdone"></td>
+                <!-- <td><input type="checkbox" name="isdone" id="isdone"></td> -->
                 <td><a href="modifier.php?id=<?=$value["id"]?>">Modifier</a></td>
                 <td><a href="supprime.php?id=<?=$value["id"]?>">Supprimer</a></td>
             </tr>
+            </div>
             <?php
         }
     }
-
-    ?>
+       
+    
+       ?>
+       <!-- <input type="submit" value="Appliquer" name='appliquer'> -->
     </table>
 </body>
 </html>
